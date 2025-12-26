@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -70,10 +76,17 @@ class _PageViewCustomState extends State<PageViewCustom> {
             color: Colors.white,
             child: Container(
               alignment: Alignment.topCenter,
-              width: double.infinity, // Ensures the container takes the full width
+              width: double.infinity,
+              margin: const EdgeInsets.all(40), // Ensures the container takes the full width
+              padding: const EdgeInsets.all(30), 
               child: Text(
-                'Top Center Text',
+                // 12/26 to get data from firebase: https://medium.com/@abdulAwalArif/fetching-a-list-of-data-from-firebase-cloud-firestore-with-flutter-6017f6bec815
+                'Pending Resource',
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  color: const Color(0xFF79cadb),
+                ),
               ),
             ),            
           ),

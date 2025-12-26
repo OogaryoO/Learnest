@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "956139054052",
+    "project_id": "learnest-88451",
+    "storage_bucket": "learnest-88451.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956139054052:android:eb98f4c9642a2175dcddf1",
+        "android_client_info": {
+          "package_name": "com.example.learnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqCI3yBmDy7OCfizQzOw1DQL5ezfgApsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
