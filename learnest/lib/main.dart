@@ -117,48 +117,83 @@ class _PageViewCustomState extends State<PageViewCustom> {
                         itemCount: resourceList.length,
                         itemBuilder: (context, index) {
                           final resource = resourceList[index];
-                          return Card(
-                            // Child widget inside Row or Column widget often requires proper height and width definition
-                            child: Row(
-                              children: <Widget>[
-                                // Use Expanded so that the width and height of ListTile can be automatically determined
-                                // https://openhome.cc/Gossip/Flutter/Expanded.html
-                                Expanded(
-                                  child: ListTile(
-                                    title: Text("Title"),
-                                    subtitle: Text("Youtube"),
-                                    trailing: RichText(
-                                      text: TextSpan(
-                                        text: 'link',
-                                        style: const TextStyle(color: Colors.blue),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            // Uri url = Uri.parse(resource.url);
-                                            // if (await canLaunchUrl(url)){
-                                            //   await launchUrl(url);
-                                            // }else {
-                                            //   throw 'Cannot open $url';
-                                            // }
-                                            //aunchUrl(Uri.parse(resource.url));
-                                            
-                                            // 1/9 can't open url in VM
-
-                                          } 
-                                      )
-                                    )
+                          return 
+                            LayoutBuilder(
+                              builder: (context, constraints) => Draggable(
+                                data: resource,
+                                feedback: SizedBox(
+                                  // use LayoutBuilder to set the width to be the same as child
+                                  // avoid using GlobalKey for dynamic list because it may be inefficient 
+                                  width: constraints.maxWidth,
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: Card(
+                                      // Child widget inside Row or Column widget often requires proper height and width definition
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          // Use Flexible so that the width and height of ListTile can be automatically determined
+                                          // https://openhome.cc/Gossip/Flutter/Expanded.html
+                                          Flexible(
+                                            child: ListTile(
+                                              title: Text("Title"),
+                                              subtitle: Text("Youtube"),
+                                              trailing: RichText(
+                                                text: TextSpan(
+                                                  text: 'link',
+                                                  style: const TextStyle(color: Colors.blue),
+                                                  recognizer: TapGestureRecognizer()
+                                                    ..onTap = () {
+                                                      launchUrl(Uri.parse(resource.url));
+                                                    } 
+                                                )
+                                              )
+                                            ),
+                                          ),
+                                          
+                                        ]
+                                      ),
+                                    ),
                                   ),
+                                ), 
+                                
+                                child: Card(
+                                  // Child widget inside Row or Column widget often requires proper height and width definition
+                                  child: Row(
+                                    children: <Widget>[
+                                      // Use Flexible so that the width and height of ListTile can be automatically determined
+                                      // https://openhome.cc/Gossip/Flutter/Expanded.html
+                                      Flexible(
+                                        child: ListTile(
+                                          title: Text("Title"),
+                                          subtitle: Text("Youtube"),
+                                          trailing: RichText(
+                                            text: TextSpan(
+                                              text: 'link',
+                                              style: const TextStyle(color: Colors.blue),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  launchUrl(Uri.parse(resource.url));
+                                                } 
+                                            )
+                                          )
+                                        ),
+                                      ),
+                                      
+                                    ]
+                                    ),
                                 ),
                                 
-                              ]
-                              ),
-                          );
-                          // return ListTile(
-                          //   title: Text(resource.url.isEmpty ? 'Empty URL' : resource.url),
-                          // );
+                              )
+                              
+                            );
+                             
                         },
                       ),
                     ),
-                  
+                  DragTarget(
+                    builder: buildTarget
+                  ),
                 ],
               )
             ),  
@@ -168,6 +203,11 @@ class _PageViewCustomState extends State<PageViewCustom> {
     );
   }
 
+  Widget buildTarget(context, candidateData, rejecteData) => Container(
+    width: 40.0,
+    height: 40.0,
+    decoration: BoxDecoration(color: const Color(0xFF79cadb), shape: BoxShape.circle),
+  );
 
   getResource() async {
     final snapshot = await FirebaseFirestore.instance.collection("users").get();
